@@ -1,67 +1,59 @@
 /* TME 441
-*  Milestone 2 - Tag Following
+*  Milestone 3 - Object manipulation
 *
-*  Navigate to a series of waypoints using camera input.
-*
-*  This sketch does not include driving and motor control functions. You must
-*  copy in your own driving.ino and motor_control.h files.
+*  This template includes example code to test your stepper and servo motors.
+*  Once you are done testing, you should create your own Arduino sketch and
+*  import the rest of your reusable code (motor_control.h and other *.ino files).
 *
 *  @author Matthew Ford
 *  @version 2026
 */
-#include <Encoder.h>
-#include "motor_control.h"
-#include "HUSKYLENS.h"
+#include <Stepper.h>
+#include <Servo.h>
 
-/* A struct is a C++ data type that groups related variables together.
-*  Here, TagPose represents the status, range, and heading of a detected tag.
-*  You may delete this comment and replace it with your own.
-*/
-struct TagPose {
-  int status;   // 1 if tag is found, 0 if not found, -1 if error
-  int range;    // [cm] Range to tag
-  int heading;  // [deg] Heading to tag relative to camera
-};
+// Initialize stepper motor with 2048 steps per revolution
+// Replace In1, In2, In3, In4 with the pin numbers connected to the stepper motor driver
+Stepper stm(2048, In1, In3, In2, In4);
 
-HUSKYLENS cam;
-
+// Initialize servo motor
+Servo svm;
 
 int main() {
   init();
 
   // Initialize communication interfaces
   Serial.begin(115200);  // USB serial for debugging
-  Serial3.begin(9600);   // HuskyLens
 
-  initMotors();
+  /* Initialize the servo motor
+  Replace PIN with the pin number connected to the servo motor control signal.
+  The second and third parameters specify the minimum and maximum pulse widths
+  corresponding to 0 and 180 degrees. If your servo motor does not turn far
+  enough, try adjusting these values.
+   */
+  svm.attach(PIN, 500, 2500);
 
-  // Configure HuskyLens camera
-  while (!cam.begin(Serial3)) {
-    Serial.println(F("Begin failed!"));
-    Serial.println(F("1.Please recheck the \"Protocol Type\" in HUSKYLENS (General Settings>>Protocol Type>>Serial 9600)"));
-    Serial.println(F("2.Please recheck the connection."));
-    delay(100);
-  }
+  // Testing functions. Uncomment the one you want to test.
+  testStepperMotor();
+  //testServoMotor();
 
-  Serial.println("HuskyLens Connected!");
+}
 
-  // Set the HuskyLens to tag recognition mode
-  cam.writeAlgorithm(ALGORITHM_TAG_RECOGNITION);
-  delay(1000);
-
+// Test the stepper motor by rotating it 1 revolution clockwise and counterclockwise
+void testStepperMotor() {
   while (true) {
-    for (int tag_id = 1; tag_id <= 3; tag_id++) {
-      Serial.println(String() + F("Searching for tag ") + tag_id);
-      
-      int status = driveToTag(tag_id);
+    stm.step(2048);  // Rotate 1 revolution clockwise
+    delay(1000);     // Wait for 1 second
+    stm.step(-2048); // Rotate 1 revolution counterclockwise
+    delay(1000);     // Wait for 1 second
+  }
+}
 
-      if (status == 1) {
-        Serial.println(String() + F("Successfully drove to tag ") + tag_id);
-      } else if (status == -1) {
-        Serial.println(String() + F("Could not find tag ") + tag_id + F(" after searching for 20 sec"));
-      } else if (status == -2) {
-        Serial.println(String() + F("Error communicating with HuskyLens while searching for tag ") + tag_id);
-      }
-    }
+// Test the servo motor by moving it between 0 and 180 degrees
+void testServoMotor() {
+  while (true) {
+    svm.write(0);    // Move servo to 0 degrees
+    delay(1000);     // Wait for servo to finish moving
+    svm.write(180);  // Move servo to 180 degrees
+    delay(1000);
   }
 }
