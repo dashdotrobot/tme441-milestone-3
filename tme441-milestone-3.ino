@@ -1,0 +1,67 @@
+/* TME 441
+*  Milestone 2 - Tag Following
+*
+*  Navigate to a series of waypoints using camera input.
+*
+*  This sketch does not include driving and motor control functions. You must
+*  copy in your own driving.ino and motor_control.h files.
+*
+*  @author Matthew Ford
+*  @version 2026
+*/
+#include <Encoder.h>
+#include "motor_control.h"
+#include "HUSKYLENS.h"
+
+/* A struct is a C++ data type that groups related variables together.
+*  Here, TagPose represents the status, range, and heading of a detected tag.
+*  You may delete this comment and replace it with your own.
+*/
+struct TagPose {
+  int status;   // 1 if tag is found, 0 if not found, -1 if error
+  int range;    // [cm] Range to tag
+  int heading;  // [deg] Heading to tag relative to camera
+};
+
+HUSKYLENS cam;
+
+
+int main() {
+  init();
+
+  // Initialize communication interfaces
+  Serial.begin(115200);  // USB serial for debugging
+  Serial3.begin(9600);   // HuskyLens
+
+  initMotors();
+
+  // Configure HuskyLens camera
+  while (!cam.begin(Serial3)) {
+    Serial.println(F("Begin failed!"));
+    Serial.println(F("1.Please recheck the \"Protocol Type\" in HUSKYLENS (General Settings>>Protocol Type>>Serial 9600)"));
+    Serial.println(F("2.Please recheck the connection."));
+    delay(100);
+  }
+
+  Serial.println("HuskyLens Connected!");
+
+  // Set the HuskyLens to tag recognition mode
+  cam.writeAlgorithm(ALGORITHM_TAG_RECOGNITION);
+  delay(1000);
+
+  while (true) {
+    for (int tag_id = 1; tag_id <= 3; tag_id++) {
+      Serial.println(String() + F("Searching for tag ") + tag_id);
+      
+      int status = driveToTag(tag_id);
+
+      if (status == 1) {
+        Serial.println(String() + F("Successfully drove to tag ") + tag_id);
+      } else if (status == -1) {
+        Serial.println(String() + F("Could not find tag ") + tag_id + F(" after searching for 20 sec"));
+      } else if (status == -2) {
+        Serial.println(String() + F("Error communicating with HuskyLens while searching for tag ") + tag_id);
+      }
+    }
+  }
+}
