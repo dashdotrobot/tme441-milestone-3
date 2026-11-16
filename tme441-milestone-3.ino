@@ -38,6 +38,7 @@ int main() {
   // Testing functions. Uncomment the one you want to test.
   testStepperMotor();
   //testServoMotor();
+  //testRangeSensor();
 
 }
 
@@ -62,6 +63,17 @@ void testServoMotor() {
     svm.write(0);    // Move servo to 0 degrees
     delay(1000);     // Wait for servo to finish moving
     svm.write(180);  // Move servo to 180 degrees
+    delay(1000);
+  }
+}
+
+// Get range to target with ultrasonic sensor and print to serial monitor
+void testRangeSensor() {
+  while (true) {
+    int range = rangeToTarget();
+    Serial.print("Range to target: ");
+    Serial.print(range);
+    Serial.println(" cm");
     delay(1000);
   }
 }

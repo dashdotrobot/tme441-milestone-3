@@ -37,10 +37,18 @@ You will do this using a component called a Linear Regulator (L7805CV).
 1. Mount the stepper motor driver somewhere on your robot board using nylon standoffs and M3 hardware. (The mounting holes don't match up with the large holes on the board, but you can attach it by just one peg, like you did for the Arduino itself.)
 2. Connect In1, In2, In3, In4 to digital output pins on the Arduino.
 3. Connect your stepper motor driver to your new 5V power supply on the breadboard.
-4. Run the included example code to test your stepper motor and confirm that it rotates forwards and backwards by the specified amount.
+4. Change the pin numbers In1...In4 in the code to match your chosen Arduino pins.
+5. Uncomment `testStepperMotor();` in the `main()` function to test your stepper motor and confirm that it rotates forwards and backwards by the specified amount.
 
 ### Test your servo motor
 
 1. Connect a servo. Make sure to correct the red wire (V_CC) to your new 5V supply, **not the Arduino's 5V supply**.
 2. Connect the signal wire to any digital pin on the Arduino.
-3. Run the included example code to test your servo and confirm that it rotates forwards and backwards by about 180 degrees.
+3. Change PIN to match your chosen Arduino pin.
+4. Uncomment `testServoMotor();` in the `main()` function to test your servo and confirm that it rotates forwards and backwards by about 180 degrees.
+
+### Test your ultrasonic range finder
+
+1. Connect your ultrasonic distance sensor. Connect 5V to the Arduino's 5V supply and connect the ECHO and TRIG pins to any two digital pins.
+2. Change ECHO and TRIG to your chosen pins.
+3. Place an object in front of your robot and uncomment `testRangeSensor();` in the `main()` function to test the range finding.
