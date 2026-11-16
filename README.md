@@ -16,10 +16,10 @@ You may also choose to use the ultrasonic distance sensor to detect objects ahea
 |---|---|---|
 | L7805CV Linear 5V voltage regulator | ![Linear regulator](imgs/to220_regulator_128w.png) | [Datasheet](https://www.st.com/content/ccc/resource/technical/document/datasheet/41/4f/b3/b0/12/d4/47/88/CD00000444.pdf/files/CD00000444.pdf/jcr:content/translations/en.CD00000444.pdf) |
 | 28BYJ-48 Stepper motor | ![Stepper motor](imgs/stepper_motor_128w.png) | [Datasheet](https://www.mouser.com/datasheet/2/758/stepd-01-data-sheet-1143075.pdf?srsltid=AYCX9vLhaZkI2lfVT1FpPYCYxSS_wqnWgwGfcByVUugY74J89JWlhx6N) |
-| 5g Hobby servo | ![Servo motor](imgs/micro_servo_128w.png) | (See Canvas kit page)
-| Stepper motor driver | ![Stepper motor driver](imgs/uln2003_driver_board_128w.png) |
+| 5g Hobby servo | ![Servo motor](imgs/micro_servo_128w.png) | [Product page](amazon.com/Smraza-Helicopter-Airplane-Control-Arduino/dp/B07L2SF3R4) |
+| Stepper motor driver | ![Stepper motor driver](imgs/uln2003_driver_board_128w.png) | [Product page](https://www.amazon.com/ELEGOO-28BYJ-48-ULN2003-Stepper-Arduino/dp/B01CP18J4A)
 | HC-SR04 Ultrasonic distance sensor | ![HC-SR04](imgs/hc_sr04_ultrasonic_128w.png) | [Datasheet](https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf) |
-| Misc. resistors and capacitors |
+| Misc. capacitors |
 
 ## Instructions
 
@@ -37,6 +37,10 @@ You will do this using a component called a Linear Regulator (L7805CV).
 1. Mount the stepper motor driver somewhere on your robot board using nylon standoffs and M3 hardware. (The mounting holes don't match up with the large holes on the board, but you can attach it by just one peg, like you did for the Arduino itself.)
 2. Connect In1, In2, In3, In4 to digital output pins on the Arduino.
 3. Connect your stepper motor driver to your new 5V power supply on the breadboard.
-4. Run the included example code to test your motor and confirm that it rotates forwards and backwards by the specified amount.
+4. Run the included example code to test your stepper motor and confirm that it rotates forwards and backwards by the specified amount.
 
 ### Test your servo motor
+
+1. Connect a servo. Make sure to correct the red wire (V_CC) to your new 5V supply, **not the Arduino's 5V supply**.
+2. Connect the signal wire to any digital pin on the Arduino.
+3. Run the included example code to test your servo and confirm that it rotates forwards and backwards by about 180 degrees.
